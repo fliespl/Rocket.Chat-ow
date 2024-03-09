@@ -334,11 +334,3 @@ export const defaultRoomParams = () => {
 
 	return params;
 };
-
-store.on('change', ([state, prevState]) => {
-	// Cross-tab communication
-	// Detects when a room is created and then route to the correct container
-	if (!prevState.room && state.room) {
-		route('/');
-	}
-});
