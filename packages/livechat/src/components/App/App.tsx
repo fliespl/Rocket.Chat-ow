@@ -70,21 +70,20 @@ type AppProps = {
 	i18n: typeof i18next;
 };
 
-export const App: FunctionalComponent<AppProps> = ({
-	config: {
-		settings: { registrationForm, nameFieldRegistrationForm, emailFieldRegistrationForm, forceAcceptDataProcessingConsent: gdprRequired },
-		online,
-		departments,
-	},
-	gdpr: { accepted: gdprAccepted },
-	user,
-}) => {
+export const App: FunctionalComponent<AppProps> = () => {
 	const { t } = useTranslation();
 
 	const {
 		dispatch,
 		minimized,
 		iframe: { visible },
+		config: {
+			settings: { registrationForm, nameFieldRegistrationForm, emailFieldRegistrationForm, forceAcceptDataProcessingConsent: gdprRequired },
+			online,
+			departments,
+		},
+		gdpr: { accepted: gdprAccepted },
+		user,
 	} = useStore();
 
 	useEffect(() => {
