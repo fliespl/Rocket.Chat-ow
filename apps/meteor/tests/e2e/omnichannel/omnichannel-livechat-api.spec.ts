@@ -67,7 +67,7 @@ test.describe('OC - Livechat API', () => {
 		let agent: Awaited<ReturnType<typeof createAgent>>;
 
 		test.beforeAll(async ({ browser, api }) => {
-			agent = await createAgent(api, 'user1')
+			agent = await createAgent(api, 'user1');
 
 			page = await browser.newPage();
 			await expect((await api.post('/settings/Enable_CSP', { value: false })).status()).toBe(200);
@@ -105,13 +105,13 @@ test.describe('OC - Livechat API', () => {
 			await test.step('Expect livechat button not be visible after minimizeWidget()', async () => {
 				await poLiveChat.page.evaluate(() => window.RocketChat.livechat.hideWidget());
 
-				await expect(page.frameLocator('#rocketchat-iframe').getByRole('button', { name: 'Rocket.Chat' })).not.toBeVisible();
+				await expect(poLiveChat.btnOpenLiveChat()).not.toBeVisible();
 			});
 
 			await test.step('Expect livechat button to be visible after show()', async () => {
 				await poLiveChat.page.evaluate(() => window.RocketChat.livechat.showWidget());
 
-				await expect(page.frameLocator('#rocketchat-iframe').getByRole('button', { name: 'Rocket.Chat' })).toBeVisible();
+				await expect(poLiveChat.btnOpenLiveChat()).toBeVisible();
 			});
 		});
 
@@ -221,16 +221,15 @@ test.describe('OC - Livechat API', () => {
 		let agent2: Awaited<ReturnType<typeof createAgent>>;
 		let departments: Awaited<ReturnType<typeof createDepartment>>[];
 
-
 		test.beforeAll(async ({ api }) => {
-			agent = await createAgent(api, 'user1')
-			agent2 = await createAgent(api, 'user2')
+			agent = await createAgent(api, 'user1');
+			agent2 = await createAgent(api, 'user2');
 
 			departments = await Promise.all([createDepartment(api), createDepartment(api)]);
 			const [departmentA, departmentB] = departments.map(({ data }) => data);
 
-			await addAgentToDepartment(api, { department: departmentA, agentId: agent.data._id })
-			await addAgentToDepartment(api, { department: departmentB, agentId: agent2.data._id })
+			await addAgentToDepartment(api, { department: departmentA, agentId: agent.data._id });
+			await addAgentToDepartment(api, { department: departmentB, agentId: agent2.data._id });
 
 			await expect((await api.post('/settings/Enable_CSP', { value: false })).status()).toBe(200);
 			await expect((await api.post('/settings/Livechat_offline_email', { value: 'test@testing.com' })).status()).toBe(200);
@@ -253,7 +252,7 @@ test.describe('OC - Livechat API', () => {
 
 			if (testInfo.title === 'OC - Livechat API - setDepartment') {
 				const { page: pageCtx2 } = await createAuxContext(browser, Users.user2);
-			 	poAuxContext2 = { page: pageCtx2, poHomeOmnichannel: new HomeOmnichannel(pageCtx) };
+				poAuxContext2 = { page: pageCtx2, poHomeOmnichannel: new HomeOmnichannel(pageCtx) };
 			}
 
 			await page.goto('/packages/rocketchat_livechat/assets/demo.html');
@@ -349,10 +348,7 @@ test.describe('OC - Livechat API', () => {
 			const depId = departmentB._id;
 
 			await test.step('Expect setDepartment to change a guest department', async () => {
-				await poLiveChat.page.evaluate(
-					(depId) => window.RocketChat.livechat.setDepartment(depId),
-					depId,
-				);
+				await poLiveChat.page.evaluate((depId) => window.RocketChat.livechat.setDepartment(depId), depId);
 			});
 
 			await test.step('Expect registered guest to be in dep2', async () => {
@@ -528,7 +524,7 @@ test.describe('OC - Livechat API', () => {
 		let agent: Awaited<ReturnType<typeof createAgent>>;
 
 		test.beforeAll(async ({ api }) => {
-			agent = await createAgent(api, 'user1')
+			agent = await createAgent(api, 'user1');
 			await expect((await api.post('/settings/Enable_CSP', { value: false })).status()).toBe(200);
 			await expect((await api.post('/settings/Livechat_offline_email', { value: 'test@testing.com' })).status()).toBe(200);
 		});
@@ -681,7 +677,6 @@ test.describe('OC - Livechat API', () => {
 			await poLiveChat.onlineAgentMessage.type('this_a_test_message_from_visitor');
 			await poLiveChat.btnSendMessageToOnlineAgent.click();
 
-
 			const watchForTrigger = page.waitForFunction(() => window.onAgentStatusChange === true);
 
 			await poLiveChat.page.evaluate(() =>
@@ -762,5 +757,4 @@ test.describe('OC - Livechat API', () => {
 			});
 		});
 	});
-
 });

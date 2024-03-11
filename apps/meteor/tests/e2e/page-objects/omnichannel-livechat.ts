@@ -1,14 +1,14 @@
-import type { Page, Locator, APIResponse } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 
 export class OmnichannelLiveChat {
 	readonly page: Page;
 
-	constructor(page: Page, private readonly api: { get(url: string): Promise<APIResponse> }) {
+	constructor(page: Page) {
 		this.page = page;
 	}
 
-	btnOpenLiveChat(label: string): Locator {
-		return this.page.locator(`role=button[name="${label}"]`);
+	btnOpenLiveChat(): Locator {
+		return this.page.locator(`[data-qa-id="chat-button"]`);
 	}
 
 	get btnOptions(): Locator {
@@ -42,8 +42,7 @@ export class OmnichannelLiveChat {
 	}
 
 	async openLiveChat(): Promise<void> {
-		const { value: siteName } = await (await this.api.get('/settings/Site_Name')).json();
-		await this.btnOpenLiveChat(siteName).click();
+		await this.btnOpenLiveChat().click();
 	}
 
 	unreadMessagesBadge(count: number): Locator {
