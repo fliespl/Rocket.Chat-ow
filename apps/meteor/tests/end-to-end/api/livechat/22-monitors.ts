@@ -289,7 +289,10 @@ type TestUser = { user: IUser; credentials: { 'X-Auth-Token': string; 'X-User-Id
 				.set(manager.credentials)
 				.expect('Content-Type', 'application/json')
 				.expect(200);
+			console.log('🚀 ~ it ~ body:', body);
 
+			console.log('🚀 ~ it ~ noUnitDepartment:', noUnitDepartment);
+			console.log('🚀 ~ it ~ unitDepartment:', unitDepartment);
 			expect(body).to.have.property('departments').that.is.an('array');
 			expect(body.departments.find((d: any) => d._id === noUnitDepartment._id)).to.exist;
 			expect(body.departments.find((d: any) => d._id === unitDepartment._id)).to.exist;
