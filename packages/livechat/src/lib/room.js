@@ -15,6 +15,7 @@ import { parentCall } from './parentCall';
 import { createToken } from './random';
 import { normalizeMessage, normalizeMessages } from './threads';
 import { handleTranscript } from './transcript';
+import Triggers from './triggers';
 
 const commands = new Commands();
 
@@ -24,6 +25,8 @@ export const closeChat = async ({ transcriptRequested } = {}) => {
 	}
 
 	const { department, config: { settings: { clearLocalStorageWhenChatEnded } = {} } = {} } = store.state;
+
+	Triggers.processTriggers();
 
 	if (clearLocalStorageWhenChatEnded) {
 		// exclude UI-affecting flags
