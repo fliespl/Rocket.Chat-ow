@@ -211,7 +211,7 @@ test.describe('OC - Livechat API', () => {
 
 	test.describe('Complex Widget Interactions', () => {
 		// Needs Departments to test this, so needs an EE license for multiple deps
-		test.skip(!IS_EE, 'Enterprise Only');
+		// test.skip(!IS_EE, 'Enterprise Only');
 		// Tests that requires interaction from an agent or more
 		let poAuxContext: { page: Page; poHomeOmnichannel: HomeOmnichannel };
 		let poAuxContext2: { page: Page; poHomeOmnichannel: HomeOmnichannel };
@@ -360,7 +360,7 @@ test.describe('OC - Livechat API', () => {
 			});
 		});
 
-		test('OC - Livechat API - registerGuest', async ({ browser }) => {
+		test.only('OC - Livechat API - registerGuest', async ({ browser }) => {
 			const registerGuestVisitor = {
 				name: faker.person.firstName(),
 				email: faker.internet.email(),
@@ -380,6 +380,15 @@ test.describe('OC - Livechat API', () => {
 
 				await poLiveChat.onlineAgentMessage.type('this_a_test_message_from_visitor');
 				await poLiveChat.btnSendMessageToOnlineAgent.click();
+			});
+
+			await test.skip('Expect registerGuest work with the same token', async () => {
+				await poLiveChat.page.evaluate(
+					(registerGuestVisitor) => window.RocketChat.livechat.registerGuest(registerGuestVisitor),
+					registerGuestVisitor,
+				);
+
+				await expect(poLiveChat.txtChatMessage('this_a_test_message_from_visitor')).toBeVisible();
 			});
 
 			await test.step('Expect registered guest to have valid info', async () => {
