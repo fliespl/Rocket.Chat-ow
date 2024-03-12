@@ -21,16 +21,19 @@ test.describe.serial('OC - Livechat', () => {
 		await expect(statusCode).toBe(200);
 	});
 
-	test.beforeAll(async ({ browser }) => {
-		const { page: livechatPage } = await createAuxContext(browser, Users.user1, '/livechat', false);
+	test.beforeAll(async ({ browser, api }) => {
+		const { page: livechatPage } = await createAuxContext(browser, Users.user1);
 
-		poLiveChat = new OmnichannelLiveChat(livechatPage);
+		poLiveChat = new OmnichannelLiveChat(livechatPage, api);
 	});
 
 	test.beforeEach(async ({ page }) => {
 		poHomeOmnichannel = new HomeOmnichannel(page);
 		await page.goto('/');
 		await page.locator('.main-content').waitFor();
+		await poHomeOmnichannel.sidenav.waitForOmnichannelOnlineStatus();
+
+		await poLiveChat.page.goto('/livechat')
 	});
 
 	test.afterAll(async ({ api }) => {

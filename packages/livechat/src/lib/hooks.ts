@@ -23,6 +23,7 @@ const createOrUpdateGuest = async (guest: StoreState['guest']) => {
 	}
 	store.setState({ user } as Omit<StoreState['user'], 'ts'>);
 	await loadConfig();
+	Triggers.callbacks?.emit('chat-visitor-registered');
 };
 
 const updateIframeGuestData = (data: Partial<StoreState['guest']>) => {
@@ -48,11 +49,7 @@ const updateIframeGuestData = (data: Partial<StoreState['guest']>) => {
 export type HooksWidgetAPI = typeof api;
 
 const api = {
-	pageVisited: (info: { change: string; title: string; location: { href: string } }) => {
-		if (info.change === 'url') {
-			Triggers.processRequest(info);
-		}
-
+	pageVisited(info: { change: string; title: string; location: { href: string } }) {
 		const { token, room } = store.state;
 		const { _id: rid } = room || {};
 
@@ -145,10 +142,10 @@ const api = {
 
 		store.setState({
 			defaultAgent: {
+				...props,
 				_id,
 				username,
 				ts: Date.now(),
-				...props,
 			},
 		});
 	},
@@ -221,6 +218,10 @@ const api = {
 
 	setParentUrl: (parentUrl: StoreState['parentUrl']) => {
 		store.setState({ parentUrl });
+	},
+	setGuestMetadata(metadata: StoreState['iframe']['guestMetadata']) {
+		const { iframe } = store.state;
+		store.setState({ iframe: { ...iframe, guestMetadata: metadata } });
 	},
 };
 

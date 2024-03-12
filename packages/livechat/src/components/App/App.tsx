@@ -94,9 +94,9 @@ export const App: FunctionalComponent = () => {
 				return route('/leave-message');
 			}
 
-			const showDepartment = departments.filter((dept) => dept.showOnRegistration).length > 0;
+			const showDepartment = departments.some((dept) => dept.showOnRegistration);
 			const isAnyFieldVisible = nameFieldRegistrationForm || emailFieldRegistrationForm || showDepartment;
-			const showRegistrationForm = !user?.token && registrationForm && isAnyFieldVisible && !Triggers.showTriggerMessages();
+			const showRegistrationForm = !user?.token && registrationForm && isAnyFieldVisible && !Triggers.hasTriggersBeforeRegistration();
 
 			if (url === '/' && showRegistrationForm) {
 				return route('/register');
