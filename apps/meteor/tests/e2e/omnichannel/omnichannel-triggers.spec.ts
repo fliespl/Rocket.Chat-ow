@@ -32,8 +32,8 @@ test.describe.serial('omnichannel-triggers', () => {
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 	});
 
-	test.beforeEach(async ({ page }) => {
-		poLiveChat = new OmnichannelLiveChat(page);
+	test.beforeEach(async ({ page, api }) => {
+		poLiveChat = new OmnichannelLiveChat(page, api);
 	});
 
 	test.afterAll(async ({ api }) => {
