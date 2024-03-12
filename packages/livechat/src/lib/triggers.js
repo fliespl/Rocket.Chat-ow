@@ -1,6 +1,5 @@
 import mitt from 'mitt';
 
-import { Livechat } from '../api';
 import store from '../store';
 import { actions } from './triggerActions';
 import { conditions } from './triggerConditions';
@@ -49,9 +48,8 @@ class Triggers {
 		}
 
 		const {
-			firedTriggers = [],
 			config: { triggers, online, enabled },
-    } = store.state;
+		} = store.state;
 
 		if (!(triggers && triggers.length > 0) || !enabled || !online) {
 			return;
