@@ -92,13 +92,11 @@ class Triggers {
 		}
 
 		const {
-			token,
 			firedTriggers = [],
-			config: { triggers },
+			config: { triggers, online, enabled },
 		} = store.state;
-		Livechat.credentials.token = token;
 
-		if (!(triggers && triggers.length > 0)) {
+		if (!(triggers && triggers.length > 0) || !enabled || !online) {
 			return;
 		}
 
