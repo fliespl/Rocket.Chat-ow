@@ -21,15 +21,14 @@ test.describe.serial('OC - Livechat', () => {
 		await expect(statusCode).toBe(200);
 	});
 
-	test.beforeAll(async ({ browser }) => {
+	test.beforeAll(async ({ browser, page }) => {
 		const { page: livechatPage } = await createAuxContext(browser, Users.user1, '/livechat', false);
 
 		poLiveChat = new OmnichannelLiveChat(livechatPage);
+		poHomeOmnichannel = new HomeOmnichannel(page);
 	});
 
 	test.beforeEach(async ({ page }) => {
-		poHomeOmnichannel = new HomeOmnichannel(page);
-
 		await page.goto('/');
 		await page.locator('.main-content').waitFor();
 	});
@@ -41,7 +40,6 @@ test.describe.serial('OC - Livechat', () => {
 
 	test('OC - Livechat - Send message to online agent', async () => {
 		await test.step('expect message to be sent by livechat', async () => {
-			await poLiveChat.page.reload();
 			await poLiveChat.openLiveChat();
 			await poLiveChat.sendMessage(newUser, false);
 
