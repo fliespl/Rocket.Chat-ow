@@ -19,6 +19,7 @@ export const sendMessageAction = async (_: string, action: ILivechatSendMessageA
 		u: agent,
 		ts: new Date().toISOString(),
 		_id: createToken(),
+		trigger: condition.name,
 	};
 
 	await upsertMessage(message);
