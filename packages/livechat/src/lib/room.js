@@ -26,8 +26,6 @@ export const closeChat = async ({ transcriptRequested } = {}) => {
 
 	const { department, config: { settings: { clearLocalStorageWhenChatEnded } = {} } = {} } = store.state;
 
-	Triggers.processTriggers();
-
 	if (clearLocalStorageWhenChatEnded) {
 		// exclude UI-affecting flags
 		const { iframe: currentIframe } = store.state;
@@ -35,6 +33,8 @@ export const closeChat = async ({ transcriptRequested } = {}) => {
 		initial.iframe = { ...currentIframe, guest: { department } };
 		await store.setState(initial);
 	}
+
+	Triggers.processTriggers();
 
 	await loadConfig();
 	parentCall('callback', 'chat-ended');
