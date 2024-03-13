@@ -40,6 +40,7 @@ test.describe.serial('OC - Livechat', () => {
 
 	test('OC - Livechat - Send message to online agent', async () => {
 		await test.step('expect message to be sent by livechat', async () => {
+			await poLiveChat.page.reload();
 			await poLiveChat.openLiveChat();
 			await poLiveChat.sendMessage(newUser, false);
 
