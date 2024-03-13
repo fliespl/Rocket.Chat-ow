@@ -360,7 +360,7 @@ test.describe('OC - Livechat API', () => {
 			});
 		});
 
-		test.only('OC - Livechat API - registerGuest', async ({ browser }) => {
+		test('OC - Livechat API - registerGuest', async ({ browser }) => {
 			const registerGuestVisitor = {
 				name: faker.person.firstName(),
 				email: faker.internet.email(),
