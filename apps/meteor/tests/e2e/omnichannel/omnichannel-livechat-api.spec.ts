@@ -211,7 +211,7 @@ test.describe('OC - Livechat API', () => {
 
 	test.describe('Complex Widget Interactions', () => {
 		// Needs Departments to test this, so needs an EE license for multiple deps
-		// test.skip(!IS_EE, 'Enterprise Only');
+		test.skip(!IS_EE, 'Enterprise Only');
 		// Tests that requires interaction from an agent or more
 		let poAuxContext: { page: Page; poHomeOmnichannel: HomeOmnichannel };
 		let poAuxContext2: { page: Page; poHomeOmnichannel: HomeOmnichannel };
@@ -382,7 +382,8 @@ test.describe('OC - Livechat API', () => {
 				await poLiveChat.btnSendMessageToOnlineAgent.click();
 			});
 
-			await test.skip('Expect registerGuest work with the same token', async () => {
+			await test.fail(async () => {
+				// 'Expect registerGuest work with the same token'
 				await poLiveChat.page.evaluate(
 					(registerGuestVisitor) => window.RocketChat.livechat.registerGuest(registerGuestVisitor),
 					registerGuestVisitor,
